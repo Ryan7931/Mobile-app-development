@@ -1,28 +1,36 @@
 import { ImageBackground, Text, View, TouchableOpacity, SafeAreaView, StyleSheet, Dimensions } from 'react-native';
 import { colors, globalStyles } from '../styles/global';
+import OffTrackLogo from '../assets/icons/OffTrackLogo';
 
-const bgImage = require('../assets/Background-WelcomeScreen.png');
+const bgImage = require('../assets/Background-LoginScreen.png');
 const { height } = Dimensions.get('window');
 
-export default function WelcomeScreen() {
+export default function LoginScreen() {
   return (
     <SafeAreaView style={styles.root}>
       <ImageBackground source={bgImage} style={styles.image} resizeMode="cover">
 
+        {/* Logo */}
         <View style={styles.logoRow}>
-          <Text style={styles.logoText}>⊙ OffTrack</Text>
+          <OffTrackLogo color="#000000" width={120} height={40} />
         </View>
 
+        {/* Bottom section */}
         <View style={styles.bottom}>
-          <Text style={styles.headline}>Explore a{'\n'}new world{'\n'}with us</Text>
-
-          <TouchableOpacity style={[globalStyles.buttonBase, styles.registerBtn]}>
-            <Text style={globalStyles.buttonText}>REGISTER</Text>
-          </TouchableOpacity>
+          <View style={[globalStyles.inputBase, { justifyContent: 'center' }]}>
+            <Text style={styles.inputPlaceholder}>Email Address</Text>
+          </View>
+          <View style={[globalStyles.inputBase, { justifyContent: 'center' }]}>
+            <Text style={styles.inputPlaceholder}>Password</Text>
+          </View>
 
           <TouchableOpacity style={[globalStyles.buttonBase, styles.loginBtn]}>
             <Text style={globalStyles.buttonText}>LOGIN</Text>
           </TouchableOpacity>
+
+          <Text style={globalStyles.footerText}>
+            Don't have an account? <Text style={globalStyles.footerLink}>Sign up</Text>
+          </Text>
         </View>
 
       </ImageBackground>
@@ -44,32 +52,18 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 40,
     left: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  logoText: {
-    color: colors.white,
-    fontSize: 18,
-    fontWeight: '700',
   },
   bottom: {
     justifyContent: 'flex-end',
     paddingHorizontal: 24,
-    paddingBottom: 40,
+    paddingBottom: 32,
   },
-  headline: {
-    color: colors.white,
-    fontSize: 36,
-    fontWeight: '800',
-    lineHeight: 44,
-    marginBottom: 32,
-  },
-  registerBtn: {
-    backgroundColor: colors.black,
+  inputPlaceholder: {
+    color: '#555',
+    fontSize: 15,
   },
   loginBtn: {
-    backgroundColor: colors.buttonLogin,
-    borderWidth: 1,
-    borderColor: '#333',
+    backgroundColor: colors.black,
+    marginTop: 4,
   },
 });

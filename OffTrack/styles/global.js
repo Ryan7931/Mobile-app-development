@@ -20,4 +20,22 @@ export const globalStyles = StyleSheet.create({
     fontWeight: '700',
     letterSpacing: 2,
   },
+  inputBase: {
+    backgroundColor: 'rgba(255,255,255,0.85)',
+    borderRadius: 30,
+    paddingVertical: 16,
+    paddingHorizontal: 20,
+    fontSize: 15,
+    color: '#000',
+    marginBottom: 12,
+  },
+  footerText: {
+    color: '#FFFFFF',
+    fontSize: 13,
+    textAlign: 'center',
+    marginTop: 12,
+  },
+  footerLink: {
+    fontWeight: '700',
+  },
 });
