@@ -45,12 +45,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     position: 'absolute',
-    top: 40,
+    top: 70,
     left: 20,
   },
   logoText: {
-    color: colors.white,
-    fontSize: 18,
+    color: colors.black,
+    fontSize: 28,
     fontWeight: '700',
   },
   bottom: {
