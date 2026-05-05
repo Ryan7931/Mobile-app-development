@@ -9,15 +9,15 @@ export default function Navbar({ active }) {
                 <Ionicons name="home-outline" size={24} color="#000" />
             </TouchableOpacity>
 
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => router.push('/search')}>
                 <Ionicons name="search-outline" size={24} color="#000" />
             </TouchableOpacity>
 
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => router.push('/add')}>
                 <Ionicons name="add-outline" size={24} color="#000" />
             </TouchableOpacity>
 
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => router.push('/notifications')}>
                 <Ionicons name="notifications-outline" size={24} color="#000" />
             </TouchableOpacity>
 

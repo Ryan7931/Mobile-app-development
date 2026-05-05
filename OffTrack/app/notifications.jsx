@@ -2,15 +2,15 @@ import { SafeAreaView, StyleSheet } from 'react-native';
 import { View, Text } from 'react-native';
 import Navbar from '../components/Navbar';
 
-export default function ProfileScreen() {
+export default function NotificationsScreen() {
   return (
     <SafeAreaView style={styles.root}>
 
       <View style={styles.content}>
-        <Text>Profile Screen</Text>
+        <Text>Notifications Screen</Text>
       </View>
 
-      <Navbar active="profile" />
+      <Navbar active="notifications" />
     </SafeAreaView>
   );
 }
