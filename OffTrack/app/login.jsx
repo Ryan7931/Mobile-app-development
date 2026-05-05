@@ -1,18 +1,18 @@
 import { ImageBackground, Text, View, TouchableOpacity, SafeAreaView, StyleSheet, Dimensions } from 'react-native';
 import { colors, globalStyles } from '../styles/global';
-import OffTrackLogo from '../assets/icons/OffTrackLogo';
+import { router } from 'expo-router';
 
-const bgImage = require('../assets/Background-LoginScreen.png');
+const bgImage = require('../assets/images/Background-LoginScreen.png');
 const { height } = Dimensions.get('window');
 
 export default function LoginScreen() {
   return (
     <SafeAreaView style={styles.root}>
-      <ImageBackground source={bgImage} style={styles.image} resizeMode="cover">
+      <ImageBackground source={bgImage} style={[styles.image, { height: height }]} resizeMode="cover">
 
         {/* Logo */}
         <View style={styles.logoRow}>
-          <OffTrackLogo color="#000000" width={120} height={40} />
+          <Text style={styles.logoText}>⊙ OffTrack</Text>
         </View>
 
         {/* Bottom section */}
@@ -24,7 +24,7 @@ export default function LoginScreen() {
             <Text style={styles.inputPlaceholder}>Password</Text>
           </View>
 
-          <TouchableOpacity style={[globalStyles.buttonBase, styles.loginBtn]}>
+          <TouchableOpacity style={[globalStyles.buttonBase, styles.loginBtn]} onPress={() => router.push('/home')}>
             <Text style={globalStyles.buttonText}>LOGIN</Text>
           </TouchableOpacity>
 
@@ -45,7 +45,6 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: height,
     justifyContent: 'space-between',
   },
   logoRow: {
@@ -53,7 +52,13 @@ const styles = StyleSheet.create({
     top: 40,
     left: 20,
   },
+  logoText: {
+    color: colors.black,
+    fontSize: 28,
+    fontWeight: '700',
+  },
   bottom: {
+    flex: 1,
     justifyContent: 'flex-end',
     paddingHorizontal: 24,
     paddingBottom: 32,

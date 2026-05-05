@@ -1,13 +1,14 @@
 import { ImageBackground, Text, View, TouchableOpacity, SafeAreaView, StyleSheet, Dimensions } from 'react-native';
 import { colors, globalStyles } from '../styles/global';
+import { router } from 'expo-router';
 
-const bgImage = require('../assets/Background-WelcomeScreen.png');
+const bgImage = require('../assets/images/Background-WelcomeScreen.png');
 const { height } = Dimensions.get('window');
 
 export default function WelcomeScreen() {
   return (
     <SafeAreaView style={styles.root}>
-      <ImageBackground source={bgImage} style={styles.image} resizeMode="cover">
+      <ImageBackground source={bgImage} style={[styles.image, { height: height }]} resizeMode="cover">
 
         <View style={styles.logoRow}>
           <Text style={styles.logoText}>⊙ OffTrack</Text>
@@ -16,11 +17,11 @@ export default function WelcomeScreen() {
         <View style={styles.bottom}>
           <Text style={styles.headline}>Explore a{'\n'}new world{'\n'}with us</Text>
 
-          <TouchableOpacity style={[globalStyles.buttonBase, styles.registerBtn]}>
+          <TouchableOpacity style={[globalStyles.buttonBase, styles.registerBtn]} onPress={() => router.push('/register')}>
             <Text style={globalStyles.buttonText}>REGISTER</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={[globalStyles.buttonBase, styles.loginBtn]}>
+          <TouchableOpacity style={[globalStyles.buttonBase, styles.loginBtn]} onPress={() => router.push('/login')}>
             <Text style={globalStyles.buttonText}>LOGIN</Text>
           </TouchableOpacity>
         </View>
@@ -37,7 +38,6 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: height,
     justifyContent: 'space-between',
   },
   logoRow: {
@@ -48,11 +48,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logoText: {
-    color: colors.white,
-    fontSize: 18,
+    color: colors.black,
+    fontSize: 28,
     fontWeight: '700',
   },
   bottom: {
+    flex: 1,
     justifyContent: 'flex-end',
     paddingHorizontal: 24,
     paddingBottom: 40,

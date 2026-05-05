@@ -1,13 +1,14 @@
 import { ImageBackground, Text, View, TouchableOpacity, SafeAreaView, StyleSheet, Dimensions } from 'react-native';
 import { colors, globalStyles } from '../styles/global';
+import { router } from 'expo-router';
 
-const bgImage = require('../assets/Background-RegisterScreen.png');
+const bgImage = require('../assets/images/Background-RegisterScreen.png');
 const { height } = Dimensions.get('window');
 
 export default function RegisterScreen() {
   return (
     <SafeAreaView style={styles.root}>
-      <ImageBackground source={bgImage} style={styles.image} resizeMode="cover">
+      <ImageBackground source={bgImage} style={[styles.image, { height: height }]} resizeMode="cover">
 
         <View style={styles.logoRow}>
           <Text style={styles.logoText}>⊙ OffTrack</Text>
@@ -24,7 +25,7 @@ export default function RegisterScreen() {
             <Text style={styles.inputPlaceholder}>Confirm Password</Text>
           </View>
 
-          <TouchableOpacity style={[globalStyles.buttonBase, styles.createBtn]}>
+          <TouchableOpacity style={[globalStyles.buttonBase, styles.createBtn]} onPress={() => router.push('/home')}>
             <Text style={globalStyles.buttonText}>CREATE ACCOUNT</Text>
           </TouchableOpacity>
 
@@ -45,7 +46,6 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: height,
     justifyContent: 'space-between',
   },
   logoRow: {
@@ -57,10 +57,11 @@ const styles = StyleSheet.create({
   },
   logoText: {
     color: colors.black,
-    fontSize: 18,
+    fontSize: 28,
     fontWeight: '700',
   },
   bottom: {
+    flex: 1,
     justifyContent: 'flex-end',
     paddingHorizontal: 24,
     paddingBottom: 32,
