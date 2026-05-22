@@ -8,8 +8,9 @@ import {
   Image,
   StyleSheet,
 } from 'react-native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Navbar from '../components/Navbar';
 
 const bannerImage = require('../assets/images/banner.png');
@@ -24,22 +25,40 @@ const favorites = [
 ];
 
 export default function ProfileScreen() {
+  const [username, setUsername] = useState('');
   const [bio, setBio] = useState(
-    'Jason is a travel enthusiast with a deep passion for planes and aviation. Whether he\'s exploring new destinations or watching aircraft take off, he\'s always captivated by the thrill of the journey.'
+    'Wat hoort hier te staan... Misschien iets over mijn favoriete reizen? Of mijn droombestemming? Of gewoon een leuke quote over reizen?'
   );
   const [editing, setEditing] = useState(false);
+
+  useEffect(() => {
+    const loadUser = async () => {
+      const data = await AsyncStorage.getItem('user');
+      if (data) {
+        const user = JSON.parse(data);
+        setUsername(user.username);
+      }
+    };
+    loadUser();
+  }, []);
 
   return (
     <SafeAreaView style={styles.root}>
       <ScrollView style={styles.scroll}>
 
+        {/* Banner + Avatar */}
         <View style={styles.bannerContainer}>
           <Image source={bannerImage} style={styles.banner} />
           <Image source={profileImage} style={styles.avatar} />
         </View>
 
+        {/* Content */}
         <View style={styles.content}>
 
+          {/* Welcome message */}
+          <Text style={styles.welcome}>Welkom, {username}!</Text>
+
+          {/* Name row */}
           <View style={styles.nameRow}>
             <Text style={styles.name}>Ryan Kalisvaart</Text>
             <TouchableOpacity
@@ -50,8 +69,10 @@ export default function ProfileScreen() {
             </TouchableOpacity>
           </View>
 
+          {/* Pronouns */}
           <Text style={styles.pronouns}>he/him</Text>
 
+          {/* Bio */}
           {editing ? (
             <TextInput
               style={styles.bioInput}
@@ -67,6 +88,7 @@ export default function ProfileScreen() {
             </View>
           )}
 
+          {/* Favorites */}
           <Text style={styles.favoritesTitle}>❤️ My favorites</Text>
           <ScrollView
             horizontal
@@ -117,10 +139,17 @@ const styles = StyleSheet.create({
     paddingTop: 56,
     paddingBottom: 32,
   },
+  welcome: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#000',
+    marginBottom: 4,
+  },
   nameRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
+    marginTop: 4,
   },
   name: {
     fontSize: 22,

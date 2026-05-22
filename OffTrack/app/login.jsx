@@ -7,59 +7,61 @@ import {
   StyleSheet,
   Dimensions,
   TextInput,
-} from "react-native";
-import { colors, globalStyles } from "../styles/global";
-import { router } from "expo-router";
-import { useState } from "react";
+  Alert,
+} from 'react-native';
+import { useState } from 'react';
+import { colors, globalStyles } from '../styles/global';
+import { router } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const bgImage = require("../assets/images/Background-LoginScreen.png");
-const { height } = Dimensions.get("window");
+const bgImage = require('../assets/images/Background-LoginScreen.png');
+const { height } = Dimensions.get('window');
 
 export default function LoginScreen() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
-  const handleLogin = () => {
-    if (!email || !password) {
-      setError("All fields are required.");
+  const handleLogin = async () => {
+    if (!username || !password) {
+      setError('All fields are required.');
       return;
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setError("Please enter a valid email address.");
+    const data = await AsyncStorage.getItem('user');
+
+    if (!data) {
+      Alert.alert('Fout', 'Geen account gevonden. Registreer eerst.');
       return;
     }
 
-    setError("");
-    console.log("All valid, ready to login");
-    router.push("/home");
+    const user = JSON.parse(data);
+
+    if (user.username === username && user.password === password) {
+      router.push('/home');
+    } else {
+      Alert.alert('Fout', 'Onjuiste gebruikersnaam of wachtwoord');
+    }
   };
+
   return (
     <SafeAreaView style={styles.root}>
-      <ImageBackground
-        source={bgImage}
-        style={[styles.image, { height: height }]}
-        resizeMode="cover"
-      >
-        {/* Logo */}
+      <ImageBackground source={bgImage} style={styles.image} resizeMode="cover">
+
         <View style={styles.logoRow}>
           <Text style={styles.logoText}>⊙ OffTrack</Text>
         </View>
 
-        {/* Bottom section */}
         <View style={styles.bottom}>
           <TextInput
-            style={[globalStyles.inputBase]}
-            placeholder="Email Address"
+            style={globalStyles.inputBase}
+            placeholder="Username"
             placeholderTextColor="#555"
-            value={email}
-            onChangeText={setEmail}
+            value={username}
+            onChangeText={setUsername}
           />
-
           <TextInput
-            style={[globalStyles.inputBase]}
+            style={globalStyles.inputBase}
             placeholder="Password"
             placeholderTextColor="#555"
             value={password}
@@ -67,7 +69,7 @@ export default function LoginScreen() {
             secureTextEntry={true}
           />
 
-          {error ? <Text style={globalStyles.errorText}>{error}</Text> : null}
+          {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
           <TouchableOpacity
             style={[globalStyles.buttonBase, styles.loginBtn]}
@@ -77,10 +79,10 @@ export default function LoginScreen() {
           </TouchableOpacity>
 
           <Text style={globalStyles.footerText}>
-            Don't have an account?{" "}
-            <Text style={globalStyles.footerLink}>Sign up</Text>
+            Don't have an account? <Text style={globalStyles.footerLink}>Sign up</Text>
           </Text>
         </View>
+
       </ImageBackground>
     </SafeAreaView>
   );
@@ -92,28 +94,33 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   image: {
-    width: "100%",
-    justifyContent: "space-between",
+    width: '100%',
+    height: height,
+    justifyContent: 'space-between',
   },
   logoRow: {
-    position: "absolute",
+    position: 'absolute',
     top: 40,
     left: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   logoText: {
     color: colors.black,
     fontSize: 28,
-    fontWeight: "700",
+    fontWeight: '700',
   },
   bottom: {
     flex: 1,
-    justifyContent: "flex-end",
+    justifyContent: 'flex-end',
     paddingHorizontal: 24,
     paddingBottom: 32,
   },
-  inputPlaceholder: {
-    color: "#555",
-    fontSize: 15,
+  errorText: {
+    color: 'red',
+    fontSize: 13,
+    marginBottom: 8,
+    paddingHorizontal: 4,
   },
   loginBtn: {
     backgroundColor: colors.black,

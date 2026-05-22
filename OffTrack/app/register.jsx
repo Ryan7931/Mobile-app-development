@@ -7,67 +7,55 @@ import {
   StyleSheet,
   Dimensions,
   TextInput,
-} from "react-native";
-import { colors, globalStyles } from "../styles/global";
-import { router } from "expo-router";
-import { useState } from "react";
+  Alert,
+} from 'react-native';
+import { useState } from 'react';
+import { colors, globalStyles } from '../styles/global';
+import { router } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const bgImage = require("../assets/images/Background-RegisterScreen.png");
-const { height } = Dimensions.get("window");
+const bgImage = require('../assets/images/Background-RegisterScreen.png');
+const { height } = Dimensions.get('window');
 
 export default function RegisterScreen() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
 
-  const handleRegister = () => {
-    // check if fields are empty
-    if (!email || !password || !confirmPassword) {
-      setError("All fields are required.");
+  const handleRegister = async () => {
+    if (!username || !password || !confirmPassword) {
+      setError('All fields are required.');
       return;
     }
 
-    // check email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setError("Please enter a valid email address.");
-      return;
-    }
-
-    // check if passwords match
     if (password !== confirmPassword) {
-      setError("Passwords do not match.");
+      Alert.alert('Fout', 'Wachtwoorden komen niet overeen');
       return;
     }
 
-    // all good — clear error and continue
-    setError("");
-    console.log("All valid, ready to create account");
-    router.push("/home");
+    await AsyncStorage.setItem('user', JSON.stringify({ username, password }));
+    router.push('/login');
   };
 
   return (
     <SafeAreaView style={styles.root}>
-      <ImageBackground
-        source={bgImage}
-        style={[styles.image, { height: height }]}
-        resizeMode="cover"
-      >
+      <ImageBackground source={bgImage} style={styles.image} resizeMode="cover">
+
         <View style={styles.logoRow}>
           <Text style={styles.logoText}>⊙ OffTrack</Text>
         </View>
 
         <View style={styles.bottom}>
           <TextInput
-            style={[globalStyles.inputBase]}
-            placeholder="Email Address"
+            style={globalStyles.inputBase}
+            placeholder="Username"
             placeholderTextColor="#555"
-            value={email}
-            onChangeText={setEmail}
+            value={username}
+            onChangeText={setUsername}
           />
           <TextInput
-            style={[globalStyles.inputBase]}
+            style={globalStyles.inputBase}
             placeholder="Password"
             placeholderTextColor="#555"
             value={password}
@@ -75,7 +63,7 @@ export default function RegisterScreen() {
             secureTextEntry={true}
           />
           <TextInput
-            style={[globalStyles.inputBase]}
+            style={globalStyles.inputBase}
             placeholder="Confirm Password"
             placeholderTextColor="#555"
             value={confirmPassword}
@@ -83,7 +71,7 @@ export default function RegisterScreen() {
             secureTextEntry={true}
           />
 
-          {error ? <Text style={globalStyles.errorText}>{error}</Text> : null}
+          {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
           <TouchableOpacity
             style={[globalStyles.buttonBase, styles.createBtn]}
@@ -93,10 +81,10 @@ export default function RegisterScreen() {
           </TouchableOpacity>
 
           <Text style={globalStyles.footerText}>
-            Already have an account?{" "}
-            <Text style={globalStyles.footerLink}>Sign in.</Text>
+            Already have an account? <Text style={globalStyles.footerLink}>Sign in.</Text>
           </Text>
         </View>
+
       </ImageBackground>
     </SafeAreaView>
   );
@@ -108,42 +96,36 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   image: {
-    width: "100%",
-    justifyContent: "space-between",
+    width: '100%',
+    height: height,
+    justifyContent: 'space-between',
   },
   logoRow: {
-    position: "absolute",
+    position: 'absolute',
     top: 40,
     left: 20,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   logoText: {
     color: colors.black,
     fontSize: 28,
-    fontWeight: "700",
+    fontWeight: '700',
   },
   bottom: {
     flex: 1,
-    justifyContent: "flex-end",
+    justifyContent: 'flex-end',
     paddingHorizontal: 24,
     paddingBottom: 32,
   },
-  inputField: {
-    justifyContent: "center",
-  },
-  inputPlaceholder: {
-    color: "#555",
-    fontSize: 15,
+  errorText: {
+    color: 'red',
+    fontSize: 13,
+    marginBottom: 8,
+    paddingHorizontal: 4,
   },
   createBtn: {
     backgroundColor: colors.black,
     marginTop: 4,
-  },
-  errorText: {
-    color: "red",
-    fontSize: 13,
-    marginBottom: 8,
-    paddingHorizontal: 4,
   },
 });
